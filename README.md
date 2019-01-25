@@ -3,11 +3,11 @@ note on spider learning project
 
 # commitsession/pythonSpider/doubanmovie:
 ## （/[doubanMovieSpider.py](doubanmovie/doubanMovieSpider.py)）
-1. movie_tag_dict 存入爬虫字典-标签
-2. do_spider 爬虫处理方法
-3. main_spider 根据标签进行抓取数据
-4. movie_spider 根据电影的id获取电影详细信息
-5. save_as_Excel 保存结果到excel
+1. movie_tag_dict() 存入爬虫字典-标签
+2. do_spider() 爬虫处理方法
+3. main_spider() 根据标签进行抓取数据
+4. movie_spider() 根据电影的id获取电影详细信息
+5. save_as_Excel() 保存结果到excel
 
 # commitsession/pythonSpider/music163:
 1. /[music163.py](music163/music163.py)入口文件
