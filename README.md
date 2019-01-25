@@ -1,5 +1,5 @@
 # pythonSpider（python3.6.7）
-Note on spider learning project
+note on spider learning project
 
 # commitsession/pythonSpider/doubanmovie:
 ## /doubanMovieSpider.py
