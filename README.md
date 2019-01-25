@@ -2,7 +2,7 @@
 note on spider learning project
 
 # commitsession/pythonSpider/doubanmovie:
-## /doubanMovieSpider.py
+## （[doubanMovieSpider.py](pythonSpider/doubanMovieSpider.py)）
 1. movie_tag_dict 存入爬虫字典-标签
 2. do_spider 爬虫处理方法
 3. main_spider 根据标签进行抓取数据
