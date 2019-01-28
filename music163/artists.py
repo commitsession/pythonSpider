@@ -41,13 +41,13 @@ def main_spider(id='1001', initial='-1'):
         else:
             artist_extend_info = artist_basic_info.find_next_sibling()['href'].replace('/user/home?id=', '').strip()
         artist_infod['artist_id'] = artist_basic_info['href'].replace('/artist?id=', '').strip()
-        artist_infod['artist_name'] = artist_basic_info.text
+        artist_infod['artist_name'] = artist_basic_info.text[0:25]
         artist_infod['artist_extend_id'] = artist_extend_info
         artist_info.append(artist_basic_info['href'].replace('/artist?id=', '').strip())
-        artist_info.append(artist_basic_info.text)
+        artist_info.append(artist_basic_info.text[0:25])
         artist_info.append(artist_extend_info)
 
         artist_infos.append(artist_info)
     return artist_infos
 
-#main_spider('1001', '65')
+#print(main_spider('1001', '65'))

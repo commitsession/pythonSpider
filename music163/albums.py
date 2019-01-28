@@ -13,6 +13,7 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
 }
 # https://music.163.com/#/artist/album?id=2116
+# https://music.163.com/#/artist/album?id=1177234&limit=12&offset=36
 url = 'https://music.163.com/artist/album'
 
 '''
@@ -20,30 +21,40 @@ IN:
 artist_id 歌手id
 OUT:
 album_infos = [{'album_id': '36875566', 'album_title': 'G.ream', 'album_time': '2017.12.07'},{}]
-
+limit 分页歌曲数
+offset 分页开始
 '''
 
 
 def main_spider(artist_id='8888'):
-    request = urllib.request.Request(url + '?id=' + artist_id, headers=header)
-    response = urllib.request.urlopen(request)
-    soup = BeautifulSoup(response.read().decode('utf-8'), 'html.parser')
-    albums = soup.find('ul', {'class': 'm-cvrlst m-cvrlst-alb4 f-cb'})
+    limit = 12
+    offset = 0
     album_infos = []
+    while True:
+        request = urllib.request.Request(url + '?id=' + artist_id + '&limit=' + str(limit) + '&offset=' + str(offset),
+                                         headers=header)
+        response = urllib.request.urlopen(request)
+        soup = BeautifulSoup(response.read().decode('utf-8'), 'html.parser')
+        if soup.find('ul', {'class': 'm-cvrlst m-cvrlst-alb4 f-cb'}) is None:
+            return album_infos
+        albums = soup.find('ul', {'class': 'm-cvrlst m-cvrlst-alb4 f-cb'})
 
-    album_basic_infos = albums.find_all('p', {'class': 'dec dec-1 f-thide2 f-pre'})
-    for album_basic_info in album_basic_infos:
-        album_infod = {}
-        album_info = []
-        # print(album_basic_info.find_next_sibling())
-        album_infod['album_id'] = album_basic_info.find_next()['href'].replace('/album?id=', '').strip()
-        album_infod['album_title'] = album_basic_info['title']
-        album_infod['album_time'] = album_basic_info.find_next_sibling().text
-        album_info.append(album_basic_info.find_next()['href'].replace('/album?id=', '').strip())
-        album_info.append(album_basic_info['title'])
-        album_info.append(album_basic_info.find_next_sibling().text)
-        album_infos.append(album_info)
+        if albums.find_all('p', {'class': 'dec dec-1 f-thide2 f-pre'}) is None:
+            return album_infos
+        album_basic_infos = albums.find_all('p', {'class': 'dec dec-1 f-thide2 f-pre'})
+        for album_basic_info in album_basic_infos:
+            album_infod = {}
+            album_info = []
+            # print(album_basic_info.find_next_sibling())
+            album_infod['album_id'] = album_basic_info.find_next()['href'].replace('/album?id=', '').strip()
+            album_infod['album_title'] = album_basic_info['title']
+            album_infod['album_time'] = album_basic_info.find_next_sibling().text
+            album_info.append(album_basic_info.find_next()['href'].replace('/album?id=', '').strip())
+            album_info.append(album_basic_info['title'])
+            album_info.append(album_basic_info.find_next_sibling().text)
+            album_infos.append(album_info)
+        offset += 12
 
     return album_infos
 
-#main_spider()
+# print(main_spider('1177234'))

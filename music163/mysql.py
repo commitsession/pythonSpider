@@ -67,14 +67,14 @@ def create_tables(create_type='all'):
     artist_infos_sql = '''
       CREATE TABLE artist_infos (
         artist_id varchar(20), 
-        artist_name varchar(40),
+        artist_name varchar(50),
         artist_extend_id varchar(20)
         )ENGINE=innodb DEFAULT CHARSET=utf8; 
         '''
     album_infos_sql = '''
       CREATE TABLE album_infos (
         album_id varchar(20), 
-        album_title varchar(100),
+        album_title varchar(200),
         album_time varchar(20)
         )ENGINE=innodb DEFAULT CHARSET=utf8; 
         '''
@@ -88,19 +88,19 @@ def create_tables(create_type='all'):
       CREATE TABLE comment_infos (
         comment_id varchar(30), 
         user_id varchar(30),
-        user_nickname varchar(100),
+        user_nickname varchar(200),
         liked_count varchar(50),
-        content varchar(1000),
+        content varchar(2000),
         is_hot varchar(10)
         )ENGINE=innodb DEFAULT CHARSET=utf8; 
     '''
-    if create_type == 'artists':
+    if create_type == 'artist_infos':
         cursor.execute(artist_infos_sql)
-    elif create_type == 'albums':
+    elif create_type == 'album_infos':
         cursor.execute(album_infos_sql)
-    elif create_type == 'musics':
+    elif create_type == 'music_infos':
         cursor.execute(music_infos_sql)
-    elif create_type == 'comments':
+    elif create_type == 'comment_infos':
         cursor.execute(comment_infos_sql)
     else:
         cursor.execute(artist_infos_sql)
@@ -109,9 +109,21 @@ def create_tables(create_type='all'):
         cursor.execute(comment_infos_sql)
 
 
-def drop_tables(table_name):
-    sql = 'drop table ' + table_name
-    cursor.execute(sql)
+def drop_tables(drop_type='all'):
+    sql = 'drop table '
+    if drop_type == 'artist_infos':
+        cursor.execute(sql+drop_type)
+    elif drop_type == 'album_infos':
+        cursor.execute(sql+drop_type)
+    elif drop_type == 'music_infos':
+        cursor.execute(sql+drop_type)
+    elif drop_type == 'comment_infos':
+        cursor.execute(sql+drop_type)
+    else:
+        cursor.execute(sql+'artist_infos')
+        cursor.execute(sql+'album_infos')
+        cursor.execute(sql+'music_infos')
+        cursor.execute(sql+'comment_infos')
 
 
 def close():

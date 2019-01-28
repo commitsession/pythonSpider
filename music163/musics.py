@@ -27,6 +27,8 @@ def main_spider(album_id='74999481'):
     request = urllib.request.Request(url + '?id=' + album_id, headers=header)
     response = urllib.request.urlopen(request)
     soup = BeautifulSoup(response.read().decode('utf-8'), 'html.parser')
+    if soup.find('div', {'id': 'song-list-pre-cache'}).find('ul', {'class': 'f-hide'}) is None:
+        return None
     musics = soup.find('div', {'id': 'song-list-pre-cache'}).find('ul', {'class': 'f-hide'})
     music_basic_infos = musics.find_all('li')
     music_infos = []

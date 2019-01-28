@@ -40,6 +40,8 @@ def main_spider(music_id='553543014'):
     # response = urllib.request.urlopen(request)
     # print(response.read().decode('utf-8'))
     r = requests.post(url=url + music_id + '?csrf_token=', data=comments_data1, headers=header)
+    if r.text is None:
+        return None
     comments_obj = json.loads(r.text)
     comment_infos = []
     for comment_obj in comments_obj['hotComments']:
@@ -79,4 +81,4 @@ def main_spider(music_id='553543014'):
 
     return comment_infos
 
-# main_spider('553543014')
+# print(main_spider('553543014'))
