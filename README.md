@@ -1,7 +1,7 @@
-# pythonSpider（python3.6.7）
+# pythonSpider（![](https://img.shields.io/badge/Python-3.6.7-blue.svg)）
 note on spider learning project
 
-# commitsession/pythonSpider/doubanmovie:
+# /[doubanmovie](doubanmovie):
 ## （/[doubanMovieSpider.py](doubanmovie/doubanMovieSpider.py)）
 1. movie_tag_dict() 存入爬虫字典-标签
 2. do_spider() 爬虫处理方法
