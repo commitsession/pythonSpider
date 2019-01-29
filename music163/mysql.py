@@ -14,7 +14,7 @@ conn = pymysql.connect(
     user='root',
     password='xroot',
     db='python_spider',
-    charset='utf8'
+    charset='utf8mb4'
 )
 
 cursor = conn.cursor()
@@ -38,12 +38,12 @@ table_name 表名称
 
 
 def insert_record(table_name, data, insert_type):
-    if table_name == 'artist_infos' or table_name == 'album_infos':
+    if table_name == 'artist_infos' or table_name == 'music_infos':
         sql = 'insert into ' + table_name + ' values(%s,%s,%s)'
-    elif table_name == 'music_infos':
-        sql = 'insert into ' + table_name + ' values(%s,%s)'
+    elif table_name == 'album_infos':
+        sql = 'insert into ' + table_name + ' values(%s,%s,%s,%s)'
     elif table_name == 'comment_infos':
-        sql = 'insert into ' + table_name + ' values(%s,%s,%s,%s,%s,%s)'
+        sql = 'insert into ' + table_name + ' values(%s,%s,%s,%s,%s,%s,%s)'
     else:
         return False
     if insert_type == 'one':
@@ -69,30 +69,33 @@ def create_tables(create_type='all'):
         artist_id varchar(20), 
         artist_name varchar(50),
         artist_extend_id varchar(20)
-        )ENGINE=innodb DEFAULT CHARSET=utf8; 
+        )ENGINE=innodb DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'; 
         '''
     album_infos_sql = '''
       CREATE TABLE album_infos (
         album_id varchar(20), 
-        album_title varchar(200),
-        album_time varchar(20)
+        album_title varchar(400),
+        album_time varchar(20),
+        artist_id varchar(20)
         )ENGINE=innodb DEFAULT CHARSET=utf8; 
         '''
     music_infos_sql = '''
      CREATE TABLE music_infos (
         music_id varchar(20), 
-        music_name varchar(50)
+        music_name varchar(300),
+        album_id varchar(20)
         )ENGINE=innodb DEFAULT CHARSET=utf8; 
     '''
     comment_infos_sql = '''
       CREATE TABLE comment_infos (
         comment_id varchar(30), 
         user_id varchar(30),
-        user_nickname varchar(200),
+        user_nickname varchar(300),
         liked_count varchar(50),
-        content varchar(2000),
-        is_hot varchar(10)
-        )ENGINE=innodb DEFAULT CHARSET=utf8; 
+        content varchar(2000) COLLATE utf8mb4_general_ci,
+        is_hot varchar(10),
+        music_id varchar(20)
+        )ENGINE=innodb DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'; 
     '''
     if create_type == 'artist_infos':
         cursor.execute(artist_infos_sql)
