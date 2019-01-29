@@ -10,7 +10,7 @@ note on spider learning project
 5. save_as_Excel() 保存结果到excel
 
 # 二、/[music163](music163):
-1. /[music163.py](music163/music163.py)入口文件
+1. /[music163.py](music163/music163.py)入口文件 一个目录下的一个分类爬取大约需要1hour 整个大约需要15*28hour
 2. /[artists.py](music163/artists.py)根据根据歌曲分类、歌手分类 查询所有歌手信息-artist_id
 3. /[albums.py](music163/albums.py)根据歌手id查询专辑信息-album_id
 4. /[musics.py](music163/musics.py)根据专辑中的专辑id查询歌曲信息-music_id
