@@ -1,5 +1,11 @@
 from chapter2 import artists, albums, musics, comments, mysql
 import datetime
+import sys
+import os
+import  logging
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+sys.path.append(rootPath)
 
 u_ids_dict = {'华语': ['华语男歌手', '华语女歌手', '华语组合/乐队'], '欧美': ['欧美男歌手', '欧美女歌手', '欧美组合/乐队'],
               '日本': ['日本男歌手', '日本女歌手', '日本组合/乐队'], '韩国': ['韩国男歌手', '韩国女歌手', '韩国组合/乐队'],
@@ -7,11 +13,10 @@ u_ids_dict = {'华语': ['华语男歌手', '华语女歌手', '华语组合/乐
 u_initials_dict = ['热门', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
                    'T',
                    'U', 'V', 'W', 'X', 'Y', 'Z', '其他']
-ids = ['1001', '1002', '1003', '2001', '2002', '2003', '6001', '6002', '6003', '7001', '7002', '7003', '4001', '4002',
-       '4003']
-initials = ['-1', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81',
-            '82', '83', '84',
-            '85', '86', '87', '88', '89', '90', '0']
+ids = ['1001']
+initials = ['-1']
+logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
+
 
 
 def query_all_artists():
@@ -19,7 +24,7 @@ def query_all_artists():
     for id in ids:
         for initial in initials:
             t = artists.main_spider(id, initial)
-            print(t)
+            logging.info(t)
             v_artist_infos += t
             mysql.insert_record('artist_infos', t, 'many')
     # print(v_artist_infos)
@@ -32,7 +37,7 @@ def query_all_albums(v_artist_infos):
         t = albums.main_spider(v_artist_info[0])
         if t is None or t == []:
             continue
-        print(t)
+        logging.info(t)
         v_album_infos += t
         mysql.insert_record('album_infos', t, 'many')
     # print(v_album_infos)
@@ -45,7 +50,7 @@ def query_all_musics(v_album_infos):
         t = musics.main_spider(v_album_info[0])
         if t is None or t == []:
             continue
-        print(t)
+        logging.info(t)
         v_music_infos += t
         mysql.insert_record('music_infos', t, 'many')
     # print(v_music_infos)
@@ -58,7 +63,7 @@ def query_all_comments(v_music_infos):
         t = comments.main_spider(v_music_info[0])
         if t is None or t == []:
             continue
-        print(t)
+        logging.info(t)
         v_comment_infos += t
         mysql.insert_record('comment_infos', t, 'many')
     # print(v_comment_infos)
@@ -66,21 +71,21 @@ def query_all_comments(v_music_infos):
 
 
 if __name__ == '__main__':
-    print('>>重新创建表 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+    logging.info('>>重新创建表 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
     mysql.drop_tables('all')
     mysql.create_tables('all')
 
-    print('>>查询所有歌手信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+    logging.info('>>查询所有歌手信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
     artist_infos = query_all_artists()
 
-    print('>>查询所有专辑信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+    logging.info('>>查询所有专辑信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
     album_infos = query_all_albums(artist_infos)
 
-    print('>>查询所有歌曲信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+    logging.info('>>查询所有歌曲信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
     music_infos = query_all_musics(album_infos)
 
-    print('>>查询所有评论信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+    logging.info('>>查询所有评论信息 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
     comment_infos = query_all_comments(music_infos)
 
     mysql.close()
-    print('>>处理结束 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+    logging.info('>>处理结束 ' + datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))

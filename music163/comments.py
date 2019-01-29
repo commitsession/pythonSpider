@@ -39,11 +39,12 @@ def main_spider(music_id='553543014'):
     # request = urllib.request.Request(url + music_id + '?csrf_token=', data=data, headers=header)
     # response = urllib.request.urlopen(request)
     # print(response.read().decode('utf-8'))
+    comment_infos = []
     r = requests.post(url=url + music_id + '?csrf_token=', data=comments_data1, headers=header)
     if r.text is None:
-        return None
+        return comment_infos
     comments_obj = json.loads(r.text)
-    comment_infos = []
+
     for comment_obj in comments_obj['hotComments']:
         hot_commentd = {}
         hot_comment = []
@@ -59,7 +60,7 @@ def main_spider(music_id='553543014'):
         hot_comment.append(str(comment_obj['likedCount']))
         hot_comment.append(comment_obj['content'].replace('💗', ''))
         hot_comment.append('True')
-
+        hot_comment.append(music_id)
         comment_infos.append(hot_comment)
 
     for comment_obj in comments_obj['comments']:
@@ -77,8 +78,9 @@ def main_spider(music_id='553543014'):
         recent_comment.append(str(comment_obj['likedCount']))
         recent_comment.append(comment_obj['content'].replace('💗', ''))
         recent_comment.append('False')
+        recent_comment.append(music_id)
         comment_infos.append(recent_comment)
 
     return comment_infos
 
-# print(main_spider('553543014'))
+#print(main_spider('574921549'))

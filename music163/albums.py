@@ -35,13 +35,12 @@ def main_spider(artist_id='8888'):
                                          headers=header)
         response = urllib.request.urlopen(request)
         soup = BeautifulSoup(response.read().decode('utf-8'), 'html.parser')
-        if soup.find('ul', {'class': 'm-cvrlst m-cvrlst-alb4 f-cb'}) is None:
-            return album_infos
         albums = soup.find('ul', {'class': 'm-cvrlst m-cvrlst-alb4 f-cb'})
-
-        if albums.find_all('p', {'class': 'dec dec-1 f-thide2 f-pre'}) is None:
+        if albums is None:
             return album_infos
         album_basic_infos = albums.find_all('p', {'class': 'dec dec-1 f-thide2 f-pre'})
+        if album_basic_infos is None:
+            return album_infos
         for album_basic_info in album_basic_infos:
             album_infod = {}
             album_info = []
@@ -52,6 +51,7 @@ def main_spider(artist_id='8888'):
             album_info.append(album_basic_info.find_next()['href'].replace('/album?id=', '').strip())
             album_info.append(album_basic_info['title'])
             album_info.append(album_basic_info.find_next_sibling().text)
+            album_info.append(artist_id)
             album_infos.append(album_info)
         offset += 12
 

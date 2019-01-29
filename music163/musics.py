@@ -27,11 +27,15 @@ def main_spider(album_id='74999481'):
     request = urllib.request.Request(url + '?id=' + album_id, headers=header)
     response = urllib.request.urlopen(request)
     soup = BeautifulSoup(response.read().decode('utf-8'), 'html.parser')
-    if soup.find('div', {'id': 'song-list-pre-cache'}).find('ul', {'class': 'f-hide'}) is None:
-        return None
-    musics = soup.find('div', {'id': 'song-list-pre-cache'}).find('ul', {'class': 'f-hide'})
-    music_basic_infos = musics.find_all('li')
     music_infos = []
+    musics = soup.find('div', {'id': 'song-list-pre-cache'})
+    if musics is None:
+        return music_infos
+    t=musics.find('ul', {'class': 'f-hide'})
+    if t.find_all('li') is None:
+        return music_infos
+    music_basic_infos = musics.find_all('li')
+
     for music_basic_info in music_basic_infos:
         music_infod = {}
         music_info = []
@@ -39,6 +43,9 @@ def main_spider(album_id='74999481'):
         music_infod['music_name'] = music_basic_info.find_next().text
         music_info.append(music_basic_info.find_next()['href'].replace('/song?id=', '').strip())
         music_info.append(music_basic_info.find_next().text)
+        music_info.append(album_id)
         music_infos.append(music_info)
 
     return music_infos
+
+#print(main_spider('3394239'))
