@@ -1,7 +1,7 @@
 # pythonSpider（![](https://img.shields.io/badge/Python-3.6.7-blue.svg)）
 note on spider learning project
 
-# 一、/[doubanmovie](doubanmovie):
+# 一、/[doubanmovie](doubanmovie):爬取豆瓣上电影相关信息
 ## （/[doubanMovieSpider.py](doubanmovie/doubanMovieSpider.py)）
 1. movie_tag_dict() 存入爬虫字典-标签
 2. do_spider() 爬虫处理方法
@@ -9,7 +9,7 @@ note on spider learning project
 4. movie_spider() 根据电影的id获取电影详细信息
 5. save_as_Excel() 保存结果到excel
 
-# 二、/[music163](music163):
+# 二、/[music163](music163):爬取网易云音乐相关信息
 1. /[music163.py](music163/music163.py)入口文件 一个目录下的一个分类爬取大约需要1hour 整个大约需要15*28hour
 2. /[artists.py](music163/artists.py)根据根据歌曲分类、歌手分类 查询所有歌手信息-artist_id
 3. /[albums.py](music163/albums.py)根据歌手id查询专辑信息-album_id
@@ -17,7 +17,7 @@ note on spider learning project
 5. /[comments.py](music163/comments.py)根据歌曲id查询评论信息
 6. /[mysql.py](music163/mysql.py) 用户pymysql（pip install pymysql）连接数据库
 
-# 三、/[chunsheng](chunsheng):
+# 三、/[chunsheng](chunsheng):智能日程提醒和聊天工具
 程序的主要思想来自网友的开源项目：shengqiangzhang/examples-of-web-crawlers/4.每天不同时间段通过微信发消息提醒女友/
 然后经过改造，在早安提醒中加入天气、当前周几、早安问候，排班信息（她的上班周期为四天）等内容；设置特定时间智能聊天机器人（主要使用的是图灵免费机器人）
 使用方法：安装依赖包，Windows下当前目录运行[chunsheng.exe](chunsheng/chunsheng.exe)，微信扫码登录即可。
