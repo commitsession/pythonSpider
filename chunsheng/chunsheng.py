@@ -10,6 +10,7 @@ from threading import Thread
 import configparser
 import time
 import datetime
+from weatherapi import get_data, get_content
 
 
 # 获取每日励志精句
@@ -49,32 +50,47 @@ def get_week_day(date):
     return week_day_dict[day]
 
 
-def remind_schedule(now_week,scheduling_message):
+def get_weather(py_name="china"):
+    xml_province = get_content(py_name)
+    city_weather = get_data(xml_province, flag=True)
+    weather = '上海今天' + city_weather['上海']['stateDetailed'] + '，' + city_weather['上海']['windState'] + '，最高温度' + \
+              city_weather['上海']['tem1'] + '度、最低温度' + city_weather['上海']['tem2'] + '度。\n\n'
+    return weather
+
+
+# 周几提醒 now_week 排班提醒 scheduling_message 天气提醒 get_weather() 早安问候语 choice(str_list_good_jitang)
+def remind_schedule(now_week, scheduling_message):
     # 每天日程提醒
-    #now_week = get_week_day(datetime.datetime.now())
+    # now_week = get_week_day(datetime.datetime.now())
     # message ="日程提醒：\n"
     if now_week == "星期一":
-        message = "今天是周一" + scheduling_message + "。\n\n人生，总会有不期而遇的温暖，要加油哟\n\n"
-        print("提醒" + my_lady_wechat_name+":"+message + "星期一:%s" % time.ctime())
+        remider = "今天是周一" + scheduling_message + "。\n\n" + get_weather(py_name="china") + choice(
+            str_list_good_jitang) + "，要加油哟\n\n"
+        print("提醒" + my_lady_wechat_name + ":" + remider + "星期一:%s" % time.ctime())
     elif now_week == "星期二":
-        message = "今天是周二" + scheduling_message + "。\n\n下午有课，有没有安排时间去听课啊，要加油哟\n\n"
-        print("提醒" + my_lady_wechat_name +":"+message + "星期二:%s" % time.ctime())
+        remider = "今天是周二" + scheduling_message + "。\n\n" + get_weather(py_name="china") + "下午有课，有没有安排时间去听课啊，要加油哟\n\n"
+        print("提醒" + my_lady_wechat_name + ":" + remider + "星期二:%s" % time.ctime())
     elif now_week == "星期三":
-        message = "今天是周三" + scheduling_message + "。\n\n眷顾你的不是好运，而是自己的选择和坚持，要加油哟\n\n"
-        print("提醒" + my_lady_wechat_name +":"+message + "周三:%s" % time.ctime())
+        remider = "今天是周三" + scheduling_message + "。\n\n" + get_weather(py_name="china") + choice(
+            str_list_good_jitang) + "，要加油哟\n\n"
+        print("提醒" + my_lady_wechat_name + ":" + remider + "周三:%s" % time.ctime())
     elif now_week == "星期四":
-        message = "周四到了" + scheduling_message + "。\n\n把每个睡醒后的早晨当成一件礼物，把每个开心后的微笑当成一个习惯，要加油哟\n\n"
-        print("提醒" + my_lady_wechat_name +":"+message + "周四:%s" % time.ctime())
+        remider = "周四到了" + scheduling_message + "。\n\n" + get_weather(
+            py_name="china") + choice(str_list_good_jitang) + "，要加油哟\n\n"
+        print("提醒" + my_lady_wechat_name + ":" + remider + "周四:%s" % time.ctime())
     elif now_week == "星期五":
-        message = "今天周五啦" + scheduling_message + "。\n\n睁开明亮的双眼，除去睡意的干扰，舒展美丽的笑脸，拥抱快乐的一天，要加油哟\n\n"
-        print("提醒" + my_lady_wechat_name +":"+message + "周五:%s" % time.ctime())
+        remider = "今天周五啦" + scheduling_message + "。\n\n" + get_weather(
+            py_name="china") + choice(str_list_good_jitang) + "，要加油哟\n\n"
+        print("提醒" + my_lady_wechat_name + ":" + remider + "周五:%s" % time.ctime())
     elif now_week == "星期六":
-        message = "今天周六啦" + scheduling_message + "。\n\n清晨到，对着镜子照，照一照，笑一笑，所有烦恼都跑掉，抑郁忧愁全都消，快乐自然不会少，要加油哟\n\n"
-        print("提醒" + my_lady_wechat_name +":"+message + "周六:%s" % time.ctime())
+        remider = "今天周六啦" + scheduling_message + "。\n\n" + get_weather(
+            py_name="china") + choice(str_list_good_jitang) + "，要加油哟\n\n"
+        print("提醒" + my_lady_wechat_name + ":" + remider + "周六:%s" % time.ctime())
     elif now_week == "星期天":
-        message = "今天是本周的最后一天" + scheduling_message + "。\n\n每天早晨，敲醒你的不是钟声，而是我的祝福，要加油哟\n\n"
-        print("提醒" + my_lady_wechat_name +":"+message + "周日:%s" % time.ctime())
-    return message
+        remider = "今天是本周的最后一天" + scheduling_message + "。\n\n" + get_weather(
+            py_name="china") + choice(str_list_good_jitang) + "，要加油哟\n\n"
+        print("提醒" + my_lady_wechat_name + ":" + remider + "周日:%s" % time.ctime())
+    return remider
 
 
 def holiday_greetings(now_time):
@@ -106,6 +122,8 @@ def holiday_greetings(now_time):
 
 # 每日早中晚睡前随机问候语
 def time_reminder(now_time, now_week, scheduling_message):
+    # 待发送的内容，先置为空
+    message = ""
     if (now_time == say_good_morning):
         # 随机取一句问候语
         message = choice(str_list_good_morning)
@@ -114,17 +132,21 @@ def time_reminder(now_time, now_week, scheduling_message):
         if (flag_wx_emoj):
             message = message + choice(str_list_emoj)
 
-        remider = remind_schedule(now_week,scheduling_message)
+        remider = remind_schedule(now_week, scheduling_message)
 
         send_message(remider + message)
         print("提醒" + my_lady_wechat_name + "早上起床:%s" % time.ctime())
 
     elif (now_time == say_good_lunch):
-        message = choice(str_list_good_lunch)
 
-        # 是否加上随机表情
-        if (flag_wx_emoj):
-            message = message + choice(str_list_emoj)
+        if scheduling_message == '，你休息的第一天':
+            message = "昨晚夜班辛苦了，有没有睡着啊，睡醒了记得找我啊！n(*≧▽≦*)n"
+        else:
+            message = choice(str_list_good_lunch)
+
+            # 是否加上随机表情
+            if (flag_wx_emoj):
+                message = message + choice(str_list_emoj)
 
         send_message(message)
         print("提醒" + my_lady_wechat_name + "中午吃饭:%s" % time.ctime())
@@ -162,7 +184,7 @@ def time_reminder(now_time, now_week, scheduling_message):
 
 # 设置上班开始日期 如：2019-5-19，则2019-5-20为白班，2019-5-21为夜班，
 # 2019-5-22、2019-5-23为休息日，四天一个轮回，设置为2099时取消设置
-def scheduling_reminder(delta_time, is_rest):
+def scheduling_reminder(delta_time):
     for n in range(365):
         if (int(delta_time) - n * 4) == 1:
             scheduling_message = '，你上白班'
@@ -178,7 +200,7 @@ def scheduling_reminder(delta_time, is_rest):
 # 在规定时间内进行关心她操作
 def start_care():
     # 待发送的内容，先置为空
-    message = ""
+    # message = ""
 
     # 来个死循环，24小时关心她
     while (True):
@@ -198,8 +220,8 @@ def start_care():
 
         # 00:00 为初始化排班时间，一天只初始化一次
         if is_rest:
-            if (now_time == '00:01'or now_time == '15:55'):
-                scheduling_message = scheduling_reminder(delta_time, is_rest)
+            if (now_time == '00:01' or now_time == '10:30'):
+                scheduling_message = scheduling_reminder(delta_time)
                 print("初始化排班信息:" + scheduling_message + "，时间:%s" % time.ctime())
 
             if "scheduling_message" in locals().keys():
@@ -254,9 +276,15 @@ if __name__ == "__main__":
     # 几号，注意补全数字，为两位数，比如6号必须写成08
     birthday_day = cf.get("configuration", "birthday_day")
 
-    # 读取早上起床时间，中午吃饭时间，下午吃饭时间，晚上睡觉时间的随机提示语
+    # 读取早安问候语，早上起床时间，中午吃饭时间，下午吃饭时间，晚上睡觉时间的随机提示语
     # 一般这里的代码不要改动，需要增加提示语可以自己打开对应的文件修改
     # 早上起床问候语列表，数据来源于新浪微博
+    # 晚上睡觉问候语列表，数据来源于新浪微博
+    str_list_good_dream = ''
+    with open("./remind_sentence/sentence_xinlingjitang.txt", "r", encoding='UTF-8') as f:
+        str_list_good_jitang = f.readlines()
+    print(str_list_good_jitang)
+
     str_list_good_morning = ''
     with open("./remind_sentence/sentence_good_morning.txt", "r", encoding='UTF-8') as f:
         str_list_good_morning = f.readlines()
@@ -333,35 +361,31 @@ tuling = Tuling(api_key='340dad825e784010933c9e733ab53169')
 
 t0 = int(datetime.datetime.fromtimestamp(time.time()).strftime('%H'))
 t1 = int(datetime.datetime.strptime('00', '%H').hour)
-t2 = int(datetime.datetime.strptime('07', '%H').hour)
+t2 = int(datetime.datetime.strptime('06', '%H').hour)
 
 
 @bot.register(chats=[my_girl_friend, User], msg_types=TEXT, except_self=True)
 def print_others(msg):
     # 如果是群聊，但没有被 @，则不回复  #isinstance(msg.chat, Group) and not msg.is_at:
-    if ((t0 - t1) >= 0) & ((t0 - t2) < 0):
+    if ((t0 - t1) >= 0) & ((t0 - t2) <= 0):
         tuling.do_reply(msg)
-    else:
-        # 回复消息内容和类型
-        return
+        # 输出聊天内容
+        print(msg)
 
-    # 输出聊天内容
-    print(msg)
+        # 可采用snownlp或者jieba等进行分词、情感分析，由于打包后文件体积太大，故暂时不采用这种方式
+        # 仅仅是直接调用网络接口
 
-    # 可采用snownlp或者jieba等进行分词、情感分析，由于打包后文件体积太大，故暂时不采用这种方式
-    # 仅仅是直接调用网络接口
+        # 做极其简单的情感分析
+        # 结果仅供参考，请勿完全相信
+        postData = {'data': msg.text}
+        response = post('https://bosonnlp.com/analysis/sentiment?analysisType=', data=postData)
+        data = response.text
 
-    # 做极其简单的情感分析
-    # 结果仅供参考，请勿完全相信
-    postData = {'data': msg.text}
-    response = post('https://bosonnlp.com/analysis/sentiment?analysisType=', data=postData)
-    data = response.text
+        # 情感评分指数(越接近1表示心情越好，越接近0表示心情越差)
+        now_mod_rank = (data.split(',')[0]).replace('[[', '')
+        print("来自" + my_lady_wechat_name + "的消息:%s\n当前情感得分:%s\n越接近1表示心情越好，越接近0表示心情越差，情感结果仅供参考，请勿完全相信！\n\n" % (
+            msg.text, now_mod_rank))
 
-    # 情感评分指数(越接近1表示心情越好，越接近0表示心情越差)
-    now_mod_rank = (data.split(',')[0]).replace('[[', '')
-    print("来自" + my_lady_wechat_name + "的消息:%s\n当前情感得分:%s\n越接近1表示心情越好，越接近0表示心情越差，情感结果仅供参考，请勿完全相信！\n\n" % (
-        msg.text, now_mod_rank))
-
-    # 发送信息到文件传输助手
-    mood_message = u"来自" + my_lady_wechat_name + "的消息:" + msg.text + "\n当前情感得分:" + now_mod_rank + "\n越接近1表示心情越好，越接近0表示心情越差，情感结果仅供参考，请勿完全相信！\n\n"
-    bot.file_helper.send(mood_message)
+        # 发送信息到文件传输助手
+        mood_message = u"来自" + my_lady_wechat_name + "的消息:" + msg.text + "\n当前情感得分:" + now_mod_rank + "\n越接近1表示心情越好，越接近0表示心情越差，情感结果仅供参考，请勿完全相信！\n\n"
+        bot.file_helper.send(mood_message)

@@ -39,7 +39,7 @@ def get_content(py_name="china"):
 def get_data(xml_data, flag=True):
     bs = BeautifulSoup(xml_data, "xml")
     citys = bs.find_all("city")
-    big_weather = []
+    big_weather = {}
     for city in citys:
         small_weather = {}
         if flag:
@@ -69,15 +69,18 @@ def get_data(xml_data, flag=True):
             small_weather['time'] = city['time']
             small_weather['url'] = city['url']
 
-        big_weather.append(small_weather)
+        big_weather[city['cityname']] = small_weather
     return big_weather
 
 
 if __name__ == "__main__":
     xml_province = get_content(py_name="china")
     city_weather = get_data(xml_province, flag=True)
-    print(city_weather)
+    print('上海今天'+city_weather['上海']['stateDetailed']+'，'+city_weather['上海']['windState']+'，最高温度'+city_weather['上海']['tem1']+'度、最低温度'+city_weather['上海']['tem2']+'度。')
 
-    xml_city = get_content(py_name="heilongjiang")
+    xml_city = get_content(py_name="shanghai")
     city_weather = get_data(xml_city, flag=False)
+    # city_weather['市中心']['windState']
     print(city_weather)
+    # 上海今天city_weather['上海']['stateDetailed']，city_weather['上海']['windState']，
+    # 最高温度city_weather['上海']['tem1']度、最低温度city_weather['上海']['tem2']度。
