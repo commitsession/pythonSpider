@@ -1,4 +1,4 @@
-# coding: utf-8
+﻿# coding: utf-8
 # -*- coding:utf-8 -*-
 from __future__ import unicode_literals
 from wxpy import *
@@ -220,7 +220,7 @@ def start_care():
 
         # 00:00 为初始化排班时间，一天只初始化一次
         if is_rest:
-            if (now_time == '00:01' or now_time == '10:30'):
+            if (now_time == '00:01' or now_time == '10:40'):
                 scheduling_message = scheduling_reminder(delta_time)
                 print("初始化排班信息:" + scheduling_message + "，时间:%s" % time.ctime())
 
