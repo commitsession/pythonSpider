@@ -220,7 +220,7 @@ def start_care():
 
         # 00:00 为初始化排班时间，一天只初始化一次
         if is_rest:
-            if (now_time == '00:01' or now_time == '10:40'):
+            if (now_time == '00:01' or now_time == '09:30'):
                 scheduling_message = scheduling_reminder(delta_time)
                 print("初始化排班信息:" + scheduling_message + "，时间:%s" % time.ctime())
 
@@ -349,6 +349,9 @@ if __name__ == "__main__":
     print(str_birthday)
 
     print(my_lady_wechat_name)
+    t1 = int(datetime.datetime.strptime('00', '%H').hour)
+    t2 = int(datetime.datetime.strptime('06', '%H').hour)
+    print("tuling start time at : " + str(t1)+" o'clock,"+ "and tuling end time at : " + str(t2)+" o'clock")
     # 开始守护女友
     t = Thread(target=start_care, name='start_care')
     t.start()
@@ -359,19 +362,16 @@ if __name__ == "__main__":
 my_girl_friend = bot.friends().search(my_lady_wechat_name)[0]
 tuling = Tuling(api_key='340dad825e784010933c9e733ab53169')
 
-t0 = int(datetime.datetime.fromtimestamp(time.time()).strftime('%H'))
-t1 = int(datetime.datetime.strptime('00', '%H').hour)
-t2 = int(datetime.datetime.strptime('06', '%H').hour)
 
-
-@bot.register(chats=[my_girl_friend, User], msg_types=TEXT, except_self=True)
+@bot.register(chats=[User], msg_types=TEXT, except_self=True)
 def print_others(msg):
-    # 如果是群聊，但没有被 @，则不回复  #isinstance(msg.chat, Group) and not msg.is_at:
-    if ((t0 - t1) >= 0) & ((t0 - t2) <= 0):
+    t0 = int(datetime.datetime.fromtimestamp(time.time()).strftime('%H'))
+    print(msg)
+    if int(msg.text.find('春生')) != -1:
+        tuling.do_reply(msg)
+    elif ((t0 - t1) >= 0) & ((t0 - t2) <= 0):
         tuling.do_reply(msg)
         # 输出聊天内容
-        print(msg)
-
         # 可采用snownlp或者jieba等进行分词、情感分析，由于打包后文件体积太大，故暂时不采用这种方式
         # 仅仅是直接调用网络接口
 
