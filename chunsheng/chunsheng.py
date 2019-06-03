@@ -220,7 +220,7 @@ def start_care():
 
         # 00:00 为初始化排班时间，一天只初始化一次
         if is_rest:
-            if (now_time == '00:01' or now_time == '09:30'):
+            if (now_time == '00:01' or now_time == '11:15'or now_time == '17:15'or now_time == '21:15'):
                 scheduling_message = scheduling_reminder(delta_time)
                 print("初始化排班信息:" + scheduling_message + "，时间:%s" % time.ctime())
 

@@ -18,7 +18,7 @@ birthday_day = 03
 say_good_morning = 06:30
 say_good_lunch = 11:25
 say_good_dinner = 17:25
-say_good_dream = 21:55
+say_good_dream = 22:05
 
 #say_good_morning = 15:44
 #say_good_lunch = 15:45
@@ -28,12 +28,12 @@ say_good_dream = 21:55
 
 # 设置晚上睡觉问候语是否在原来的基础上再加上每日学英语精句
 # 1表示是，0表示否
-flag_learn_english = 1
+flag_learn_english = 0
 
 
 # 设置所有问候语结束是否加上表情符号
 # 1表示是，0表示否
-flag_wx_emoj = 1
+flag_wx_emoj = 0
 
 
 # 设置节日祝福语
