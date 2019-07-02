@@ -216,7 +216,7 @@ def start_care():
         is_rest = True
         now_time_sec = time.time()
 
-        delta_time = (now_time_sec - original_time) / 84400
+        delta_time = (now_time_sec - original_time) / 86400
 
         # 00:00 为初始化排班时间，一天只初始化一次
         if is_rest:
