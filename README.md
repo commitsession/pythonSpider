@@ -20,7 +20,7 @@ note on spider learning project
 # 三、/[chunsheng](chunsheng):智能日程提醒和聊天工具
 程序的主要思想来自网友的开源项目：shengqiangzhang/examples-of-web-crawlers/4.每天不同时间段通过微信发消息提醒女友/
 然后经过改造，在早安提醒中加入天气、当前周几、早安问候，排班信息（她的上班周期为四天）等内容；设置特定时间智能聊天机器人（主要使用的是图灵免费机器人）
-使用方法：安装依赖包，Windows下当前目录运行[chunsheng.exe](pythonSpider/chunsheng/chunsheng.exe)，微信扫码登录即可。
+使用方法：安装依赖包，Windows下当前目录运行[chunsheng.exe](chunsheng/chunsheng.exe)，微信扫码登录即可。
 也可以在当前目录使用 pyinstaller -F chunsheng.py 打包此程序
 
 ## （/[chunsheng.py](chunsheng/chunsheng.py)）
